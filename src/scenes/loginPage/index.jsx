@@ -1,9 +1,23 @@
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 import Form from "./Form";
+import { useContext, useEffect } from "react";
+import { UserRegistered } from "context/SuccessFullyRegistered";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
   const theme = useTheme();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const { isRegistered } = useContext(UserRegistered);
+  console.log(isRegistered);
+  useEffect(() => {
+    if (isRegistered === true) {
+      toast.success("Successfully Registered, Please Sign In Now!!!");
+    } else if (isRegistered === false) {
+      toast.error("Registered Failed, Try Again and fill all the inputs!!!");
+    }
+  }, [isRegistered]);
+
   return (
     <Box>
       <Box

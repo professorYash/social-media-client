@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import { UserRegistered } from "context/SuccessFullyRegistered";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -54,7 +55,8 @@ const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
-
+  const { setIsRegistered } = useContext(UserRegistered);
+  
   const register = async (values, onSubmitProps) => {
     // this allows us to send form info with image
     const formData = new FormData();
@@ -74,7 +76,10 @@ const Form = () => {
     onSubmitProps.resetForm();
 
     if (savedUser) {
+      setIsRegistered(true);
       setPageType("login");
+    } else {
+      setIsRegistered(false);
     }
   };
 
